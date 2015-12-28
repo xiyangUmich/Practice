@@ -1,0 +1,125 @@
+// Example program
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+class sort{
+private: vector<int> &myVector;
+         void swap(int &a, int &b);
+         void compswap(int &a, int &b);
+         int partition(int left, int right);
+public:
+   sort(vector<int> &v);
+    void bubbleSort();
+    void adpBubbleSort();
+    void selectionSort();
+    void adpSelectionSort();
+    void insertionSort();
+    void adpInsertionSort();
+    void quickSort(int left, int right);
+};
+
+int main()
+{
+    vector<int> v{3,4,7,0,10,22,8,9,5};
+    vector<int> v2{3,6,7,2,10,56,9};
+    sort s(v);
+    int left =0;
+    int right = v.size()-1;
+    s.quickSort(left,right);
+    for(int i:v) cout<<i<<" ";
+    cout<<endl;
+}
+
+
+sort::sort(vector<int> &v):myVector(v){}
+void sort::compswap (int &a, int &b){
+        if(a>b){
+        int temp=a;
+        a = b;
+        b = temp;
+        }
+    }
+void sort::swap(int &a, int &b){
+    int temp = a;
+    a = b;
+    b = temp;
+}
+int sort::partition(int left, int right){
+    int l = left;
+    int r = right-1;
+    int temp = myVector[right];
+    while(1){
+        while(myVector[l]<temp) ++l;
+        while(r>l && myVector[r]>temp) --r;
+        if(l>=r) break; 
+        swap(myVector[l], myVector[r]);
+    }
+    swap(myVector[l], myVector[right]);
+    return l;
+}
+
+void sort::bubbleSort(){                                        //compare: n^2/2 ; swap: ave n^2/4
+        for(unsigned int i=0;i<myVector.size();++i)
+            for(unsigned int j=myVector.size()-1;j>i;--j)
+               compswap(myVector[j-1],myVector[j]);
+    }
+void sort::adpBubbleSort(){                                     //compare: ave n^2/4; swap: ave n^2/4
+    bool hasChanged = true;
+    for(unsigned int i=0;i<myVector.size();++i){
+        if(!hasChanged) break;
+        hasChanged = false;
+        for(unsigned int j=myVector.size()-1;j>i;--j)
+            if(myVector[j-1]>myVector[j]){
+                swap(myVector[j-1],myVector[j]);
+                hasChanged = true;
+            }
+    }
+}
+
+void sort::selectionSort(){                                  //compare: n^2/2; swap: n-1
+    for(unsigned int i=0;i<myVector.size()-1;++i){
+        int minInd = i;
+        for(unsigned int j=i+1;j<myVector.size();++j)
+            if(myVector[minInd]>myVector[j])
+              minInd = j;
+        swap(myVector[minInd], myVector[i]);    
+    }
+}
+
+void sort::adpSelectionSort(){                            //compare: n^2/2+(n-1); swap: ave n/2 
+    for(unsigned int i=0;i<myVector.size()-1;++i){
+        unsigned int minInd = i;
+        for(unsigned int j=i+1;j<myVector.size();++j)
+            if(myVector[minInd]>myVector[j])
+              minInd = j;
+        if(minInd!=i) swap(myVector[minInd], myVector[i]);    
+    }
+}
+
+void sort::insertionSort(){                             //compare: n^2/2; swap: ave n^2/4
+    for(unsigned int i=1;i<myVector.size();++i)
+        for(unsigned int j=i;j>0;--j)
+            compswap(myVector[j-1],myVector[j]);
+}
+
+void sort:: adpInsertionSort(){                       //compare: ave n^2/4; swap: ave n^2/4
+    for(unsigned int i = 1;i<myVector.size();++i){
+        int curr = myVector[i];
+        unsigned int j =i;
+        while(j>0 && myVector[j-1]>curr){
+            myVector[j] = myVector[j-1];
+            --j;
+        }
+        myVector[j] = curr;
+    }
+}
+
+void sort::quickSort(int left, int right){    //worst case: O(n^2); best case: O(NlogN); ave: NlogN
+    if(left>=right) return;
+    int pivot = partition(left,right);
+    quickSort(left,pivot-1);
+    quickSort(pivot+1,right);
+}
+

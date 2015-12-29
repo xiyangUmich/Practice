@@ -1,0 +1,41 @@
+Given a sorted array of strings which is interspersed with empty strings, wite a method to find the loactaion of a given string.
+
+// Example program
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int findStr(vector<string> &str, string target);
+
+int main()
+{
+  vector<string> str{"aaa", " ", " ", "bc", " "," ","d"," ","fe"};
+  cout<<findStr(str, "aca")<<endl;
+}
+
+int findStr(vector<string> &str, string target){
+    int left=0, right=str.size()-1;
+    while(left<=right){
+        int mid=(left+right)/2;
+        if(str[mid]==" "){
+            int l=mid-1;
+            while(l>=left && str[l]==" ") --l;
+            if(l>=left) mid=l;
+            else{
+                int r= mid+1;
+                while(r<=right && str[right]==" ") ++r;
+                if(r<=right) mid=r;
+                else return -1;
+            }
+        }
+        
+        if(str[mid]!=" "){
+            if(str[mid]==target) return mid;
+            if(str[mid]<target) left = mid+1;
+            else right = mid-1;
+        }
+    }
+    return -1;
+}

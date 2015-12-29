@@ -1,0 +1,72 @@
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+class heap{                       //In increased order from top to bottom
+private:
+    vector<int> myVector;
+    void swap(int &a, int &b);
+    void fixUp(int k);
+    void fixDown(int k);
+public:
+    heap();
+    void buildHeap(vector<int> &v);
+    void push(int ele);
+    void pop();
+    void printOut();
+};
+
+int main()
+{
+    vector<int> v{3,4,7,0,10,22,8,9,5};
+    heap h;
+    h.buildHeap(v);
+    h.printOut();
+    h.push(15);
+    h.printOut();
+    h.pop();
+    h.printOut();
+}
+
+heap::heap(){
+    myVector.push_back(0);
+    }
+void heap:: swap(int &a, int &b){
+    int temp = a;
+    a = b;
+    b = temp;
+}
+void heap::fixUp(int k){
+  while(k/2>=1 && myVector[k]<myVector[k/2]){
+    swap(myVector[k],myVector[k/2]);
+    k/=2;
+  }
+}
+void heap::fixDown(int k){
+   while(k*2<=myVector.size()-1){
+        int j = (k*2+1<=myVector.size()-1 && myVector[k*2+1]<myVector[k*2])? k*2+1:k*2;
+        if(myVector[k]>myVector[j]){
+            swap(myVector[k], myVector[j]);
+            k=j;
+        }
+        else break;
+   }
+}
+void heap::push(int ele){
+    myVector.push_back(ele);
+    fixUp(myVector.size()-1);
+}
+void heap::pop(){
+    swap(myVector[1], myVector[myVector.size()-1]);
+    fixDown(1);
+}
+void heap::buildHeap(vector<int> &v){
+    for(int i:v)
+        push(i);    
+}
+void heap::printOut(){
+    for(int i=1;i<myVector.size();++i)
+        cout<<myVector[i]<<" ";
+        cout<<endl;
+}

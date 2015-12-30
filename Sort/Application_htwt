@@ -1,5 +1,5 @@
 Given an array of pairs, calculate the longest number of pairs that can be sorted based on both of the two eles.
-// Not yet compiled
+// Example program
 #include <iostream>
 #include <string>
 #include <vector>
@@ -9,14 +9,15 @@ using namespace std;
 
 class htwt{
 private:
-    vector<pair<int,int>> myVector;
-    void quickSortByHt(int begin, int end);
+    vector<pair<int,int>> &myVector;               //Will change the location of each ele, need &
     int partition(int begin, int end);
     void swap(pair<int,int> &a, pair<int,int> &b);
     void compswap(pair<int,int> &a, pair<int,int> &b);
+    void quickSortByHt(int begin, int end);
     
 public:
    htwt(vector<pair<int,int>>& v);
+    
    int longestNum();
 };
 
@@ -24,9 +25,11 @@ int main()
 {
   vector<pair<int,int>> v{{50,75}, {35,64}, {89,30},{3,29},{7,90}};
   htwt obj(v);
+  //obj.quickSortByHt(0, v.size()-1);
+  
   int l = obj.longestNum();
-  for(auto vec:v) cout<<"{"<<v.first<<","<<v.second<<"}"<<" ";
-  cout<<endl;
+  for(auto vec:v) cout<<"{"<<vec.first<<","<<vec.second<<"}"<<" ";
+   cout<<endl;
   cout<<l<<endl;
 }
 
@@ -38,7 +41,7 @@ void htwt::swap(pair<int,int> &a, pair<int,int> &b){
     b = temp;
 }
 
-void::compswap(pair<int,int> &a, pair<int,int> &b){
+void htwt::compswap(pair<int,int> &a, pair<int,int> &b){
     if(a.first>b.first) swap(a,b);
 }
 void htwt::quickSortByHt(int begin, int end){
@@ -62,7 +65,7 @@ int htwt::partition(int begin, int end){
 
 int htwt::longestNum(){
     int maxLength = 1;
-    quickortByHt(0,myVector.size()-1);
+    quickSortByHt(0,myVector.size()-1);
     vector<int> record(myVector.size(),1);
     for(int i=1;i<myVector.size();++i){
         if(myVector[i].second>myVector[i-1].second){

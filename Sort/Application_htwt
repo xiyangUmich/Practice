@@ -1,0 +1,74 @@
+Given an array of pairs, calculate the longest number of pairs that can be sorted based on both of the two eles.
+// Not yet compiled
+#include <iostream>
+#include <string>
+#include <vector>
+#include <utility>
+
+using namespace std;
+
+class htwt{
+private:
+    vector<pair<int,int>> myVector;
+    void quickSortByHt(int begin, int end);
+    int partition(int begin, int end);
+    void swap(pair<int,int> &a, pair<int,int> &b);
+    void compswap(pair<int,int> &a, pair<int,int> &b);
+    
+public:
+   htwt(vector<pair<int,int>>& v);
+   int longestNum();
+};
+
+int main()
+{
+  vector<pair<int,int>> v{{50,75}, {35,64}, {89,30},{3,29},{7,90}};
+  htwt obj(v);
+  int l = obj.longestNum();
+  for(auto vec:v) cout<<"{"<<v.first<<","<<v.second<<"}"<<" ";
+  cout<<endl;
+  cout<<l<<endl;
+}
+
+htwt::htwt(vector<pair<int,int>>& v):myVector(v){}
+
+void htwt::swap(pair<int,int> &a, pair<int,int> &b){
+    auto temp = a;
+    a = b;
+    b = temp;
+}
+
+void::compswap(pair<int,int> &a, pair<int,int> &b){
+    if(a.first>b.first) swap(a,b);
+}
+void htwt::quickSortByHt(int begin, int end){
+    if(begin >= end) return;
+    int pivot = partition(begin, end);
+    quickSortByHt(begin, pivot-1);
+    quickSortByHt(pivot+1,end);    
+}
+int htwt::partition(int begin, int end){
+    int temp = myVector[end].first;
+    int l=begin, r=end-1;
+    while(1){
+        while(myVector[l].first<temp) ++l;
+        while(r>l && myVector[r].first>temp) --r;
+        if(l>=r) break;
+        swap(myVector[l], myVector[r]);
+    }
+    swap(myVector[l],myVector[end]);
+    return l;
+}
+
+int htwt::longestNum(){
+    int maxLength = 1;
+    quickortByHt(0,myVector.size()-1);
+    vector<int> record(myVector.size(),1);
+    for(int i=1;i<myVector.size();++i){
+        if(myVector[i].second>myVector[i-1].second){
+            record[i]+=record[i-1];
+            maxLength = max(maxLength, record[i]);
+        }
+    }
+    return maxLength;
+}

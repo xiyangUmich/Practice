@@ -22,7 +22,7 @@ class BST{
     public:
         BST(vector<int> v);
         void print();
-        void insert(int target);
+        void insert(int target);     //Worst: O(n); Ave: O(logn)
         void del(int target);
 };
 int main()

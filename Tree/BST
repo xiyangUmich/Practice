@@ -1,0 +1,122 @@
+// Example program
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+struct BSTNode{
+    int val;
+    BSTNode *left;
+    BSTNode *right;
+    BSTNode(int v): val(v),left(NULL), right(NULL){}
+};
+
+class BST{
+    private:
+        BSTNode* BSTRoot;
+        void inorderPri(BSTNode* root);
+        void insert(BSTNode* root, int target);
+        void deleteNode(BSTNode* root, BSTNode* parent);
+        void del(BSTNode* root, BSTNode* parent, int target);
+    public:
+        BST(vector<int> v);
+        void print();
+        void insert(int target);
+        void del(int target);
+};
+int main()
+{
+  vector<int> treeVal{1,2,5,8,14,3,9,2};
+  BST bst(treeVal);
+  bst.print();
+  bst.insert(15);
+  bst.print();
+  bst.del(1);
+  bst.print();
+  bst.del(20);
+  bst.print();
+  
+}
+
+BST::BST(vector<int> v){
+    if(v.size()==0) cout<<"Input at least one number in the array please"<<endl;
+    BSTRoot=new BSTNode(v[0]);
+    for(int i=1;i<v.size();++i) insert(BSTRoot, v[i]);
+}
+
+void BST::insert(BSTNode* root, int target){
+    if(root->val==target) {cout<<"duplication"<<endl; return;}
+    if(root->val<target){
+        if(root->right) { insert(root->right, target); return;}
+        else{
+            BSTNode* temp =new BSTNode(target);
+            root->right = temp;
+            return;
+        }
+    }
+    else{
+        if(root->left) {insert(root->left, target);return;}
+        else{
+            BSTNode* temp =new BSTNode(target);
+            root->left = temp;
+            return;
+        }
+    }
+}
+
+void BST::inorderPri(BSTNode* root){
+    if(!root) return;
+    if(root->left) inorderPri(root->left);
+    cout<<root->val<<" ";
+    if(root->right) inorderPri(root->right);
+}
+
+void BST::print(){
+    inorderPri(BSTRoot);
+    cout<<endl;
+}
+void BST::insert(int target){
+    insert(BSTRoot, target);
+}
+
+void BST::del(BSTNode* root, BSTNode* parent, int target){
+    if(root==NULL) {
+        cout<<"There's no target tree node"<<endl;
+        return;
+    }
+    if(root->val==target)
+        deleteNode(root,parent);
+    else if(root->val<target) del(root->right, root,target);
+    else del(root->left,root,target);
+}
+
+void BST::del(int target){
+    del(BSTRoot,NULL, target);
+}
+
+void BST::deleteNode(BSTNode* root, BSTNode* parent){
+    if(!root->left && !root->right) {
+        if(parent==NULL) BSTRoot=NULL;
+        if(parent->left==root) parent->left=NULL;
+        else parent->right = NULL;    
+    }
+    else if(!root->left){
+        if(parent==NULL) BSTRoot=root->right;
+        else if(parent->left = root) parent->left=root->right;
+        else parent->right = root->right;
+    }
+    else if(!root->right){
+        if(parent==NULL) BSTRoot=root->left;
+        else if(parent->left = root) parent->left=root->left;
+        else parent->right = root->left;
+    }
+    else {
+       BSTNode* temp = root->right;
+       while(temp->left) temp = temp->left;
+       temp->left = root->left;
+       if(temp!=root->right) temp->right=root->right;
+       if(parent->left==root) parent->left = temp;
+       else parent->right = temp;
+    }
+}

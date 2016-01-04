@@ -1,0 +1,70 @@
+Eg. M="10000000000", N="10011", i=2, j=6=>N="10001001100"
+
+// Example program
+#include <iostream>
+#include <string>
+#include <vector>
+#include <math.h>
+
+using namespace std;
+
+class bitMani{
+private: 
+    int M, N;
+    int i,j;
+    int convertStrToBin(string s);
+    string convertBinToStr(int n);
+public:
+    bitMani(string M2, string N2, int i2, int j2);
+    int add();
+    void printOut(int n);
+};
+
+int main()
+{
+  string M="10000000000";
+  string N="10011";
+  bitMani b(M,N,2,6);
+  int res=b.add();
+  //cout<<res<<endl;
+  b.printOut(res);
+}
+
+bitMani::bitMani(string M2, string N2, int i2, int j2):M(convertStrToBin(M2)),N(convertStrToBin(N2)), i(i2), j(j2){}
+int bitMani::add(){
+    //cout<<N<<endl;
+    //cout<<convertBinToStr(N);
+    int temp=1;
+    int n=j-i;
+    while(n){
+        temp=(temp<<1) |1;
+        --n;
+    }
+   //cout<<convertBinToStr(temp)<<endl;
+    N=N<<i;
+    //cout<<convertBinToStr(N)<<endl;
+    temp=temp<<i;
+     M = M & (~temp);
+    // cout<<convertBinToStr(M)<<endl;
+    return M|N;
+}
+string bitMani::convertBinToStr(int n){
+    string res;
+    while(n){
+        res=to_string(n%2)+res;
+        n/=2;
+    }
+    return res;
+}
+
+int bitMani::convertStrToBin(string s){
+    int res=0;
+    for(int m=s.size()-1, p=0;m>=0;--m,++p) 
+        res=(s[m]-'0')*pow(2,p)+res;
+    return res;        
+}
+
+void bitMani::printOut(int n){
+    string s = convertBinToStr(n);
+    cout<<s<<endl;
+}

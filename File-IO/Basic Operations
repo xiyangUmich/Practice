@@ -1,0 +1,46 @@
+// Example program
+#include <iostream>
+#include <string>
+#include <vector>
+#include <fstream>
+using namespace std;
+
+
+public:
+file(istream in2, ostream)
+void readFile(){
+   
+}
+void writeFile(){
+  
+}
+size_t getPosition(string line, string delimiter){
+   
+}
+
+int main(){
+    istream in("C://try.txt");               //should use "//" in path
+    ostream out("C://try2.txt");
+    vector<string> lines;
+    string delimiter("()/");
+    // read file
+     if(!in.is_open()){
+        cout<<"cannot open th file"<<endl;
+        return;
+    }
+        int i=0;
+        while(getline(in,lines[i])) ++i;
+   
+    //write file
+       if(!out.is_open){
+        cout<<"cannot open th file"<<endl;
+        return;
+    }
+    out<<"Hello World!"<<endl;
+   
+   //get the position of the first char which does not belong to delimiter
+    size_t pos;
+    pos = line.find_first_not_of(delimiter,0);
+   
+    }
+

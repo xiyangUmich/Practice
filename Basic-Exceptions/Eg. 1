@@ -1,0 +1,49 @@
+// Example program
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+class negativeError{};
+class compareError{};
+class inputError{};
+
+int factorial(int n){
+    if(n<0) throw negativeError();
+    int res=1;
+    while(n) res*=n--;
+    return res;
+}
+
+int combination(int m, int n){
+    if(m<n) throw compareError();
+    return factorial(m)/(factorial(n)*factorial(m-n));
+}
+int main()
+{
+    cout<<"Enter commands like /factorial 3/ or /combination 5 4/\n ";
+ string f;
+ int m,n;
+ while(cin>>f)
+ try{
+    if(f=="factorial"){
+        cin>>n;
+        cout<<"factorial of "<<n<<" is "<<factorial(n)<<endl;
+    }
+    else if(f=="combination"){
+        cin>>m>>n;
+        cout<<"combination of "<<m<<" "<<n<<" is "<<combination(m,n)<<endl;
+    }
+    else throw inputError();
+ }catch(negativeError){
+    cout<<"n cannot be negative, please input again"<<endl;
+ }
+ catch(compareError){
+    cout<<"m cannot be smaller than n, please try again"<<endl;
+ }
+ catch(inputError){
+    cout<<"has no such an operation, please try again"<<endl;
+ }
+ 
+}
+
